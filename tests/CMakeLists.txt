@@ -3,11 +3,11 @@ if (WIN32)
     # Need to name the target "vulkan-1" so that it'll be loaded instead of the *actual* vulkan-1.dll on the system
     set_target_properties(VulkanMock PROPERTIES OUTPUT_NAME "vulkan-1")
 else()
-    add_library(VulkanMock STATIC vulkan_mock.hpp vulkan_mock.cpp)
+    add_library(VulkanMock STATIC vulkan_mock.hpp vulkan_mock.cpp vulkan_mock_setup.hpp vulkan_mock_setup.cpp)
 endif()
 target_link_libraries(VulkanMock
     PUBLIC
-        Vulkan::Headers vk-bootstrap
+        Vulkan::Headers vk-bootstrap Catch2::Catch2
     PRIVATE
         vk-bootstrap-compiler-warnings
 )
@@ -27,6 +27,7 @@ add_executable(vk-bootstrap-test
     error_code_tests.cpp
     unit_tests.cpp
     include_checks.cpp
+    vulkan_hpp_tests.cpp
 )
 
 target_link_libraries(vk-bootstrap-test
